@@ -326,6 +326,7 @@ h1 {
   position: relative;
   z-index: 2;
   width: min(450px, 94%);
+  max-width: 100%;
   height: auto;
   border: 9px solid #151816;
   border-radius: 58px;
@@ -643,7 +644,8 @@ h1 {
 .privacy-phone {
   position: relative;
   z-index: 1;
-  width: 430px;
+  width: min(430px, 94%);
+  max-width: 100%;
   height: auto;
   border: 8px solid #111412;
   border-radius: 52px;
