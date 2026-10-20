@@ -268,17 +268,6 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
       </div>
     </footer>
 
-    <div class="sticky-app-bar" role="region" aria-label="Quick App Store download">
-      <div class="sticky-app-info">
-        <img src="../assets/app-icon.png" alt="" width="40" height="40">
-        <div>
-          <strong>Alcohol Free Tracker</strong>
-          <span>{pitch_headline}</span>
-        </div>
-      </div>
-      <a class="button button-primary sticky-app-cta" data-campaign="{prefix}_sticky" href="{html.escape(url_sticky)}" target="_blank" rel="noopener">Get Free App</a>
-    </div>
-
     <script src="../script.js"></script>
   </body>
 </html>
@@ -370,17 +359,6 @@ def render_guides_index_html(posts: list, cfg: dict) -> str:
         <p class="copyright">&copy; <span data-year>2026</span> Alcohol Free Tracker. Not medical advice or a substitute for professional care.</p>
       </div>
     </footer>
-
-    <div class="sticky-app-bar" role="region" aria-label="Quick App Store download">
-      <div class="sticky-app-info">
-        <img src="../assets/app-icon.png" alt="" width="40" height="40">
-        <div>
-          <strong>Alcohol Free Tracker</strong>
-          <span>100% Private &middot; iPhone &amp; iPad</span>
-        </div>
-      </div>
-      <a class="button button-primary sticky-app-cta" data-campaign="web_guides_sticky" href="{html.escape(url_sticky)}" target="_blank" rel="noopener">Get Free App</a>
-    </div>
 
     <script src="../script.js"></script>
   </body>
