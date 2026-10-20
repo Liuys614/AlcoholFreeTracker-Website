@@ -381,13 +381,13 @@ h1 {
 }
 
 .hero-floating-rem {
-  top: 15%;
-  left: -32px;
+  top: 48px;
+  left: -100px;
 }
 
 .hero-floating-sos {
-  bottom: 20%;
-  right: -28px;
+  bottom: 68px;
+  right: -95px;
   animation-delay: 2.2s;
 }
 
@@ -400,7 +400,7 @@ h1 {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1120px) {
   .hero-floating-card {
     display: none;
   }
