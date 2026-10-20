@@ -34,127 +34,169 @@ document.querySelectorAll("[data-year]").forEach((node) => {
   });
 })();
 
-// --- Interactive 3-Minute Urge Surfing Lab ---
-(function initUrgeSurfingWidget() {
-  const toggleBtn = document.getElementById("breathing-toggle-btn");
-  const labelEl = document.getElementById("breathing-label");
-  const clockEl = document.getElementById("breathing-clock");
-  const haloEl = document.getElementById("breathing-halo");
-
-  if (!toggleBtn || !labelEl || !clockEl) return;
-
-  let isRunning = false;
-  let remainingSeconds = 180;
-  let cycleSeconds = 0;
-  let timerInterval = null;
-
-  function updateDisplay() {
-    const mins = Math.floor(remainingSeconds / 60);
-    const secs = remainingSeconds % 60;
-    clockEl.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-
-    // 12-second box cycle: 4s Inhale, 4s Hold, 4s Exhale
-    const phase = cycleSeconds % 12;
-    if (phase < 4) {
-      labelEl.textContent = "Inhale (4s)";
-    } else if (phase < 8) {
-      labelEl.textContent = "Hold (4s)";
-    } else {
-      labelEl.textContent = "Exhale (4s)";
-    }
+// --- Science section: scroll reveals ---
+(function initReveals() {
+  const els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("in-view"));
+    return;
   }
-
-  function start() {
-    isRunning = true;
-    toggleBtn.textContent = "Pause Reset";
-    toggleBtn.style.background = "var(--ink)";
-    toggleBtn.style.color = "white";
-    if (haloEl) haloEl.style.animationPlayState = "running";
-
-    timerInterval = setInterval(() => {
-      if (remainingSeconds > 0) {
-        remainingSeconds--;
-        cycleSeconds++;
-        updateDisplay();
-      } else {
-        stop();
-        labelEl.textContent = "Wave Passed ✨";
-        toggleBtn.textContent = "Reset 3 Minutes";
-        remainingSeconds = 180;
-        cycleSeconds = 0;
-      }
-    }, 1000);
-  }
-
-  function stop() {
-    isRunning = false;
-    clearInterval(timerInterval);
-    toggleBtn.textContent = "Resume Reset";
-    toggleBtn.style.background = "";
-    toggleBtn.style.color = "";
-    if (haloEl) haloEl.style.animationPlayState = "paused";
-  }
-
-  toggleBtn.addEventListener("click", () => {
-    if (isRunning) {
-      stop();
-    } else {
-      start();
-    }
-  });
-
-  updateDisplay();
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("in-view");
+        entry.target.dispatchEvent(new CustomEvent("revealed"));
+        io.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+  );
+  els.forEach((el) => io.observe(el));
 })();
 
-// --- Interactive Body Recovery Timeline Switcher ---
-(function initTimelineSwitcher() {
-  const STAGES = {
-    "8h": {
-      stat: "Hour 8: Blood Sugar & Ethanol Clearance",
-      desc: "Blood alcohol drops to 0.00. The liver shifts energy from alcohol detoxification back to glucose regulation, preventing nighttime hypoglycemic crashes."
-    },
-    "72h": {
-      stat: "Day 3 (72h): Neurotransmitter Equilibrium",
-      desc: "GABA and glutamate balance stabilizes. The brain fog, post-drinking jitters, and 'Hanxiety' (hangover anxiety) subside as your central nervous system baseline steadies."
-    },
-    "7d": {
-      stat: "Day 7: Deep REM Sleep Architecture Restored",
-      desc: "Alcohol suppresses Rapid Eye Movement sleep. By night 7 without alcohol, restorative REM cycles rebound (+40% efficiency) and resting heart rate drops by 4 to 8 BPM."
-    },
-    "30d": {
-      stat: "Day 30: Hepatic Fat Drop & Dopamine Reset",
-      desc: "Clinical studies demonstrate up to 15–20% reduction in liver fat. Natural dopamine receptor sensitivity returns, restoring intrinsic motivation and emotional resilience."
-    }
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// --- Urge curve: a glowing "surfer" rides the craving wave ---
+(function initUrgeCurve() {
+  const card = document.getElementById("urge-curve");
+  const path = document.getElementById("urgePath");
+  const dot = document.getElementById("urgeDot");
+  if (!card || !path || !dot) return;
+
+  const steps = card.querySelectorAll(".urge-steps li");
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = card.classList.contains("in-view") ? 0 : len;
+
+  const setStep = (t) => {
+    const key = t < 0.38 ? "rise" : t < 0.6 ? "peak" : "pass";
+    steps.forEach((li) => li.classList.toggle("active", li.dataset.step === key));
   };
 
-  const buttons = document.querySelectorAll(".timeline-pill-btn");
-  const statEl = document.getElementById("timeline-stat");
-  const descEl = document.getElementById("timeline-desc");
+  const place = (t) => {
+    const p = path.getPointAtLength(t * len);
+    dot.setAttribute("cx", p.x);
+    dot.setAttribute("cy", p.y);
+  };
 
-  if (!buttons.length || !statEl || !descEl) return;
+  const start = () => {
+    path.style.strokeDashoffset = 0;
+    if (prefersReducedMotion) {
+      place(0.5);
+      setStep(0.5);
+      return;
+    }
+    const DURATION = 7000; // one full ride
+    const PAUSE = 1200;
+    let t0 = null;
+    const tick = (now) => {
+      if (t0 === null) t0 = now + 2200; // wait for line draw
+      const elapsed = now - t0;
+      if (elapsed >= 0) {
+        const cycle = elapsed % (DURATION + PAUSE);
+        const raw = Math.min(cycle / DURATION, 1);
+        const t = raw < 0.5 ? 2 * raw * raw : 1 - Math.pow(-2 * raw + 2, 2) / 2; // easeInOutQuad
+        place(t);
+        setStep(t);
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const stageKey = btn.getAttribute("data-stage");
-      if (!STAGES[stageKey]) return;
-
-      buttons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      // Smooth text transition
-      statEl.style.opacity = "0";
-      descEl.style.opacity = "0";
-
-      setTimeout(() => {
-        statEl.textContent = STAGES[stageKey].stat;
-        descEl.textContent = STAGES[stageKey].desc;
-        statEl.style.opacity = "1";
-        descEl.style.opacity = "1";
-      }, 140);
-    });
-  });
-
-  statEl.style.transition = "opacity 140ms ease";
-  descEl.style.transition = "opacity 140ms ease";
+  if (card.classList.contains("in-view")) start();
+  else card.addEventListener("revealed", start, { once: true });
 })();
 
+// --- Breathing orb: 4s inhale / 6s exhale (same "calm 4-6" rhythm as the app) ---
+(function initBreathingOrb() {
+  const orb = document.getElementById("orb");
+  const label = document.getElementById("orbLabel");
+  const count = document.getElementById("orbCount");
+  const btn = document.getElementById("orbBtn");
+  if (!orb || !label || !count || !btn) return;
+
+  const PHASES = [
+    { key: "inhale", text: "Breathe in", secs: 4 },
+    { key: "exhale", text: "Breathe out", secs: 6 }
+  ];
+  const ROUNDS = 6; // one minute
+  let running = false;
+  let timers = [];
+
+  const clear = () => {
+    timers.forEach(clearTimeout);
+    timers.forEach(clearInterval);
+    timers = [];
+  };
+
+  const stop = (finished) => {
+    running = false;
+    clear();
+    orb.dataset.phase = "idle";
+    orb.style.setProperty("--dur", "1.2s");
+    label.textContent = finished ? "Nice." : "Ready";
+    count.textContent = finished ? "1 minute done" : "4 · 6";
+    btn.textContent = finished ? "Go again" : "Start breathing";
+  };
+
+  const runPhase = (round, idx) => {
+    if (!running) return;
+    if (round >= ROUNDS) return stop(true);
+    const phase = PHASES[idx];
+    orb.style.setProperty("--dur", `${phase.secs}s`);
+    orb.dataset.phase = phase.key;
+    label.textContent = phase.text;
+    let left = phase.secs;
+    count.textContent = left;
+    const iv = setInterval(() => {
+      left -= 1;
+      if (left > 0) count.textContent = left;
+    }, 1000);
+    timers.push(iv);
+    timers.push(
+      setTimeout(() => {
+        clearInterval(iv);
+        const next = (idx + 1) % PHASES.length;
+        runPhase(next === 0 ? round + 1 : round, next);
+      }, phase.secs * 1000)
+    );
+  };
+
+  btn.addEventListener("click", () => {
+    if (running) return stop(false);
+    running = true;
+    btn.textContent = "Stop";
+    runPhase(0, 0);
+  });
+})();
+
+// --- Count-up stats ---
+(function initCountUps() {
+  const card = document.getElementById("stats-card");
+  if (!card) return;
+  const run = () => {
+    card.querySelectorAll(".count").forEach((el, i) => {
+      const to = parseFloat(el.dataset.to);
+      const dec = parseInt(el.dataset.dec || "0", 10);
+      if (prefersReducedMotion) {
+        el.textContent = to.toFixed(dec);
+        return;
+      }
+      const DURATION = 1600;
+      const delay = 250 + i * 180;
+      let t0 = null;
+      const tick = (now) => {
+        if (t0 === null) t0 = now + delay;
+        const p = Math.max(0, Math.min((now - t0) / DURATION, 1));
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (to * eased).toFixed(dec);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+  if (card.classList.contains("in-view")) run();
+  else card.addEventListener("revealed", run, { once: true });
+})();

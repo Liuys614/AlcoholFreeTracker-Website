@@ -102,7 +102,7 @@
             </div>
             <p class="store-note">For iPhone &amp; iPad · Free to start · 100% Private</p>
             <ul class="hero-trust" aria-label="Product assurances">
-              <li>🧬 Clinical Science</li>
+              <li>🧬 Research-informed</li>
               <li>🔒 100% On-Device</li>
               <li>✨ Zero Accounts</li>
               <li>🛡️ Anti-Shame</li>
@@ -115,15 +115,15 @@
               <div class="hero-floating-card hero-floating-rem" aria-hidden="true">
                 <span class="floating-icon">🧬</span>
                 <div>
-                  <strong>REM Sleep Restored</strong>
-                  <span>Day 7 · +40% deep recovery</span>
+                  <strong>Deep REM Sleep</strong>
+                  <span>Day 7 · restoring</span>
                 </div>
               </div>
               <div class="hero-floating-card hero-floating-sos" aria-hidden="true">
                 <span class="floating-icon">🌊</span>
                 <div>
-                  <strong>Urge Surfing Active</strong>
-                  <span>3-minute wave crest</span>
+                  <strong>Craving SOS</strong>
+                  <span>Calm 4-6 breathing</span>
                 </div>
               </div>
             </div>
@@ -131,84 +131,114 @@
         </div>
       </section>
 
-      <!-- Science Bento Grid -->
-      <section class="section bento-section" id="science">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Evidence-Based Architecture</p>
-            <h2>Engineered around neuroscience. Not empty slogans.</h2>
-            <p>Willpower depletes by 5 PM. We built tools grounded in Dr. Alan Marlatt's relapse prevention research and circadian biology so you never fight biology alone.</p>
+      <!-- Science Section -->
+      <section class="sci" id="science" aria-labelledby="sci-title">
+        <div class="sci-glow sci-glow-a" aria-hidden="true"></div>
+        <div class="sci-glow sci-glow-b" aria-hidden="true"></div>
+        <div class="container sci-inner">
+          <header class="sci-head reveal">
+            <p class="sci-eyebrow">The science</p>
+            <h2 id="sci-title">Cravings are waves.<br><em>Your body is already healing.</em></h2>
+          </header>
+
+          <!-- 1. Urge curve -->
+          <article class="sci-urge reveal" id="urge-curve">
+            <div class="sci-urge-copy">
+              <span class="sci-tag">01 · Urge surfing</span>
+              <h3>An urge rises, peaks, and passes — if you let it.</h3>
+              <ol class="urge-steps">
+                <li data-step="rise"><b>Rise</b><span>A cue — 5 PM, the fridge, a bad day.</span></li>
+                <li data-step="peak"><b>Peak</b><span>Notice it in your body. Don't argue with it.</span></li>
+                <li data-step="pass"><b>Pass</b><span>Breathe until it fades on its own.</span></li>
+              </ol>
+              <p class="sci-cite">Bowen &amp; Marlatt (2009), <i>Psychology of Addictive Behaviors</i> 23(4)</p>
+            </div>
+            <figure class="urge-chart" aria-label="Craving intensity rises, peaks and falls over time">
+              <svg viewBox="0 0 640 320" preserveAspectRatio="xMidYMid meet" role="img">
+                <defs>
+                  <linearGradient id="urgeFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7fd1bf" stop-opacity="0.38"/>
+                    <stop offset="100%" stop-color="#7fd1bf" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="urgeStroke" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#f0b46a"/>
+                    <stop offset="45%" stop-color="#f3d39b"/>
+                    <stop offset="100%" stop-color="#7fd1bf"/>
+                  </linearGradient>
+                  <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
+                    <feGaussianBlur stdDeviation="6" result="b"/>
+                    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <g class="urge-grid">
+                  <line x1="40" y1="270" x2="620" y2="270"/>
+                  <line x1="40" y1="190" x2="620" y2="190"/>
+                  <line x1="40" y1="110" x2="620" y2="110"/>
+                </g>
+                <path class="urge-area" d="M40 268 C 120 262, 170 200, 220 120 S 285 46, 310 46 S 370 70, 420 150 S 520 262, 620 266 L 620 270 L 40 270 Z" fill="url(#urgeFill)"/>
+                <path class="urge-line" id="urgePath" d="M40 268 C 120 262, 170 200, 220 120 S 285 46, 310 46 S 370 70, 420 150 S 520 262, 620 266" fill="none" stroke="url(#urgeStroke)" stroke-width="4" stroke-linecap="round"/>
+                <g class="urge-labels">
+                  <text x="150" y="300">Rise</text>
+                  <text x="310" y="300" text-anchor="middle">Peak</text>
+                  <text x="500" y="300">Pass</text>
+                  <line class="peak-mark" x1="310" y1="60" x2="310" y2="270"/>
+                </g>
+                <circle class="urge-dot" id="urgeDot" r="9" cx="40" cy="268" filter="url(#dotGlow)"/>
+              </svg>
+              <figcaption><span class="axis-y">Craving intensity</span><span class="axis-x">Time →</span></figcaption>
+            </figure>
+          </article>
+
+          <div class="sci-row">
+            <!-- 2. Breathing orb -->
+            <article class="sci-card sci-breathe reveal" id="breathe-card">
+              <span class="sci-tag">02 · Try one round</span>
+              <h3>Slow breathing calms the alarm.</h3>
+              <div class="orb" id="orb" data-phase="idle" aria-live="polite">
+                <span class="orb-ring r3"></span>
+                <span class="orb-ring r2"></span>
+                <span class="orb-ring r1"></span>
+                <span class="orb-core">
+                  <span class="orb-label" id="orbLabel">Ready</span>
+                  <span class="orb-count" id="orbCount">4 · 6</span>
+                </span>
+              </div>
+              <button type="button" class="orb-btn" id="orbBtn">Start breathing</button>
+              <p class="sci-cite">~6 breaths/min raises heart-rate variability — Zaccaro et al. (2018), <i>Frontiers in Human Neuroscience</i></p>
+            </article>
+
+            <!-- 3. One-month stats -->
+            <article class="sci-card sci-stats reveal" id="stats-card">
+              <span class="sci-tag">03 · After one dry month</span>
+              <h3>Measured in a controlled study.</h3>
+              <ul class="stat-list">
+                <li><b><span class="count" data-to="25">0</span>%</b><span class="stat-desc">lower insulin resistance</span></li>
+                <li><b><span class="count" data-to="6">0</span>%</b><span class="stat-desc">lower blood pressure</span></li>
+                <li><b><span class="count" data-to="1.5" data-dec="1">0</span> kg</b><span class="stat-desc">average weight lost</span></li>
+              </ul>
+              <p class="sci-cite">Mehta et al. (2018), <i>BMJ Open</i> — 94 moderate-to-heavy drinkers, 4 weeks alcohol-free vs. 47 controls</p>
+            </article>
           </div>
 
-          <div class="bento-grid">
-            <!-- Bento Card 1: 3-Minute Urge Surfing Lab (Large) -->
-            <article class="bento-card bento-card-large" id="urge-surfing-lab">
-              <span class="bento-badge">⚡ 3-Minute Craving Lab</span>
-              <h3>Cravings peak and crest in 3 minutes. Ride the wave.</h3>
-              <p class="bento-desc">Addiction research proves habit-driven dopamine spikes reach maximum intensity between 180 and 300 seconds. When the 5 PM urge strikes, engage the vagus nerve with guided breathing and 360° spatial audio instead of fighting it.</p>
-
-              <!-- Interactive Breathing Widget -->
-              <div class="breathing-widget">
-                <div class="breathing-ring-wrap" aria-live="polite">
-                  <div class="breathing-ring-outer" id="breathing-halo"></div>
-                  <div class="breathing-ring-inner">
-                    <span class="breathing-state" id="breathing-label">Inhale (4s)</span>
-                    <span class="breathing-timer" id="breathing-clock">03:00</span>
-                  </div>
-                </div>
-                <div class="breathing-controls">
-                  <button type="button" class="breathing-btn" id="breathing-toggle-btn">Start 3-Minute Reset</button>
-                </div>
-              </div>
-
-              <div class="bento-citation">
-                <span>📚 Grounded in Dr. G. Alan Marlatt's Relapse Prevention &amp; Mindfulness-Based Urge Surfing Model (Univ. of Washington)</span>
-              </div>
-            </article>
-
-            <!-- Bento Card 2: Body Repair Timeline (Medium) -->
-            <article class="bento-card">
-              <span class="bento-badge">🧬 Cellular Recovery</span>
-              <h3>Your body begins healing at Hour 8.</h3>
-              <p class="bento-desc">Track how liver fat, resting heart rate, and sleep architecture repair after your last drink.</p>
-
-              <!-- Interactive Timeline Switcher -->
-              <div class="timeline-pills" role="tablist" aria-label="Body Recovery Stages">
-                <button type="button" class="timeline-pill-btn" data-stage="8h" role="tab">8 Hours</button>
-                <button type="button" class="timeline-pill-btn" data-stage="72h" role="tab">72 Hours</button>
-                <button type="button" class="timeline-pill-btn active" data-stage="7d" role="tab">7 Days</button>
-                <button type="button" class="timeline-pill-btn" data-stage="30d" role="tab">30 Days</button>
-              </div>
-
-              <div class="timeline-card-content" id="timeline-display" aria-live="polite">
-                <div class="timeline-metric-stat" id="timeline-stat">Day 7: Deep REM Sleep Rebound</div>
-                <p class="timeline-metric-desc" id="timeline-desc">Alcohol suppresses Rapid Eye Movement sleep. By night 7, natural sleep architecture restores and resting heart rate drops by 4 to 8 BPM.</p>
-              </div>
-
-              <div class="bento-citation">
-                <span>🔬 Data compiled from National Institute on Alcohol Abuse and Alcoholism (NIAAA)</span>
-              </div>
-            </article>
-
-            <!-- Bento Card 3: 100% On-Device Privacy (Dark) -->
-            <article class="bento-card bento-card-dark">
-              <span class="bento-badge">🔒 100% Local-First</span>
-              <h3>Your sobriety is nobody's business.</h3>
-              <p class="bento-desc">Most wellness apps upload health telemetry to third-party ad brokers. Alcohol Free Tracker stores 100% of check-ins locally on your physical iPhone.</p>
-
-              <div class="privacy-lock-badge">
-                <span class="privacy-lock-icon">🛡️</span>
-                <div class="privacy-lock-text">
-                  <strong>Zero Cloud Servers · Zero Accounts</strong>
-                  <span>Your logs never leave your device. Protected by iOS sandbox.</span>
-                </div>
-              </div>
-
-              <div class="bento-citation">
-                <span>🔐 Offline-First Architectural Guarantee</span>
-              </div>
-            </article>
-          </div>
+          <!-- 4. Recovery journey -->
+          <article class="journey reveal" id="journey">
+            <div class="journey-head">
+              <span class="sci-tag">04 · Body recovery</span>
+              <h3>What the app tracks, hour by hour.</h3>
+            </div>
+            <div class="journey-track" role="list">
+              <div class="journey-line" aria-hidden="true"><span class="journey-fill"></span></div>
+              <div class="jnode" role="listitem" style="--i:0"><img src="assets/recovery/8h.webp" alt="" width="160" height="160" loading="lazy"><b>8 h</b><span>Ethanol clears</span></div>
+              <div class="jnode" role="listitem" style="--i:1"><img src="assets/recovery/24h.webp" alt="" width="160" height="160" loading="lazy"><b>24 h</b><span>Heart off overdrive</span></div>
+              <div class="jnode" role="listitem" style="--i:2"><img src="assets/recovery/72h.webp" alt="" width="160" height="160" loading="lazy"><b>72 h</b><span>Withdrawal peak passes</span></div>
+              <div class="jnode" role="listitem" style="--i:3"><img src="assets/recovery/7d.webp" alt="" width="160" height="160" loading="lazy"><b>7 d</b><span>REM sleep returns</span></div>
+              <div class="jnode" role="listitem" style="--i:4"><img src="assets/recovery/14d.webp" alt="" width="160" height="160" loading="lazy"><b>14 d</b><span>Gut lining resets</span></div>
+              <div class="jnode" role="listitem" style="--i:5"><img src="assets/recovery/30d.webp" alt="" width="160" height="160" loading="lazy"><b>30 d</b><span>Liver fat drops</span></div>
+              <div class="jnode" role="listitem" style="--i:6"><img src="assets/recovery/90d.webp" alt="" width="160" height="160" loading="lazy"><b>90 d</b><span>Dopamine rebalances</span></div>
+              <div class="jnode" role="listitem" style="--i:7"><img src="assets/recovery/365d.webp" alt="" width="160" height="160" loading="lazy"><b>1 yr</b><span>Long-term risk falls</span></div>
+            </div>
+            <p class="sci-cite">Sources: NIAAA; Ebrahim et al. (2013), <i>Alcoholism: Clinical &amp; Experimental Research</i> (alcohol &amp; REM sleep). Individual timelines vary. Not medical advice.</p>
+          </article>
         </div>
       </section>
 
