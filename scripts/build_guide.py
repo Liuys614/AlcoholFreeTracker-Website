@@ -130,6 +130,33 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
               <ul style="padding-left: 18px; margin: 0; font-size: 0.9rem;">{items}</ul>
             </div>"""
 
+    # Generate Table of Contents from h2 tags and inject anchor IDs
+    headings = []
+
+    def inject_h2(match):
+        raw_text = match.group(1)
+        plain_text = re.sub(r"<[^>]+>", "", raw_text).strip()
+        slug_id = re.sub(r"[^a-z0-9]+", "-", plain_text.lower()).strip("-")
+        headings.append((slug_id, plain_text))
+        return f'<h2 id="{slug_id}">{raw_text}</h2>'
+
+    rendered_body = re.sub(r"<h2>(.*?)</h2>", inject_h2, post["body_html"])
+
+    toc_html = ""
+    if headings:
+        toc_items = "".join(
+            f'<li><a href="#{hid}">{html.escape(htext)}</a></li>'
+            for hid, htext in headings
+        )
+        toc_html = f"""
+            <div class="sidebar-card toc-card">
+              <p class="eyebrow">On This Page</p>
+              <h3>Table of Contents</h3>
+              <ul class="toc-list">
+                {toc_items}
+              </ul>
+            </div>"""
+
     pitch_screen = post.get("pitch_screen", "02-body-recovery.webp")
     pitch_headline = html.escape(post.get("pitch_headline", "Track your alcohol-free progress privately"))
     pitch_body = html.escape(post.get("pitch_body", "100% local-first on your iPhone. Zero accounts, zero cloud tracking."))
@@ -195,20 +222,13 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
       <div class="container guide-layout">
         <div>
           <article class="guide-article">
-            {post['body_html']}
+            {rendered_body}
           </article>
           {faq_section_html}
         </div>
 
-        <aside class="guide-sidebar" aria-label="App download & related guides">
-          <div class="sidebar-card">
-            <p class="eyebrow">Free iOS App</p>
-            <h3>{pitch_headline}</h3>
-            <p>{pitch_body}</p>
-            <img class="sidebar-preview" src="../assets/appstore/{pitch_screen}" alt="Alcohol Free Tracker iOS app preview" width="210" height="456" loading="lazy">
-            <a class="button button-primary" style="width: 100%;" data-campaign="{prefix}_side" href="{html.escape(url_sidebar)}" target="_blank" rel="noopener">Download on App Store</a>
-            <p class="store-note" style="text-align: center; margin-top: 10px;">No account required &middot; 100% offline</p>
-          </div>
+        <aside class="guide-sidebar" aria-label="Table of contents and related guides">
+          {toc_html}
           {related_links_html}
         </aside>
       </div>
