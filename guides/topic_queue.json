@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "alcohol-recovery-timeline-day-by-day",
+    "target_keyword": "alcohol recovery timeline day by day",
+    "secondary_keywords": ["what happens when you stop drinking timeline", "8 hours 24 hours 7 days no alcohol", "body repair after quitting drinking"],
+    "category": "Body Recovery · Timeline",
+    "campaign_prefix": "seo_recovery_timeline",
+    "pitch_screen": "02-body-recovery.webp",
+    "pitch_headline": "Follow your body's real-time healing on iPhone",
+    "pitch_body": "Watch blood sugar normalization (8h), REM sleep restoration (7d), and liver fat reduction unfold automatically based on your last drink.",
+    "status": "published"
+  },
+  {
+    "slug": "how-to-survive-evening-alcohol-cravings-urge-surfing",
+    "target_keyword": "how to stop 5pm alcohol cravings urge surfing",
+    "secondary_keywords": ["evening wine cravings", "how long does an alcohol craving last", "urge surfing breathing technique"],
+    "category": "Craving Relief · Neuroscience",
+    "campaign_prefix": "seo_urge_surfing_5pm",
+    "pitch_screen": "03-urge-surfing.webp",
+    "pitch_headline": "Ride out any craving in 3 minutes with Spatial Audio",
+    "pitch_body": "Neuroscience shows alcohol cravings crest and fade within 3 to 5 minutes. Tap the built-in Craving SOS button for guided breathing whenever the 5 PM habit hits.",
+    "status": "pending"
+  },
+  {
+    "slug": "hangover-anxiety-hanxiety-recovery-guide",
+    "target_keyword": "how to stop hangover anxiety hanxiety",
+    "secondary_keywords": ["why does alcohol cause anxiety next day", "gaba glutamate rebound hangover", "hangover tracker app"],
+    "category": "Mental Clarity · Hangover Recovery",
+    "campaign_prefix": "seo_hanxiety_guide",
+    "pitch_screen": "02-body-recovery.webp",
+    "pitch_headline": "Track your neurotransmitter reset after drinking",
+    "pitch_body": "See exactly when GABA and glutamate balance returns to baseline after a heavy night—100% privately on your iPhone.",
+    "status": "pending"
+  },
+  {
+    "slug": "how-much-money-you-save-not-drinking-30-days",
+    "target_keyword": "how much money do you save not drinking for 30 days",
+    "secondary_keywords": ["alcohol savings calculator", "cost of drinking wine every night", "empty calories saved quitting alcohol"],
+    "category": "Financial & Health Savings",
+    "campaign_prefix": "seo_money_saved_30d",
+    "pitch_screen": "04-savings.webp",
+    "pitch_headline": "Calculate your exact cash & drink savings automatically",
+    "pitch_body": "Set your typical weekly drink spend once and watch your accumulated savings grow down to the cent every alcohol-free hour.",
+    "status": "pending"
+  },
+  {
+    "slug": "how-to-drink-less-without-quitting-completely",
+    "target_keyword": "how to drink less alcohol without quitting completely",
+    "secondary_keywords": ["mindful drinking tracker", "alcohol moderation rules", "track light moderate heavy drinking days"],
+    "category": "Mindful Moderation",
+    "campaign_prefix": "seo_drink_less_guide",
+    "pitch_screen": "07-check-in.webp",
+    "pitch_headline": "A tracker that never shames you for moderation",
+    "pitch_body": "Log alcohol-free days alongside light or moderate days on a visual monthly heatmap—no broken-streak guilt, no judgment.",
+    "status": "pending"
+  },
+  {
+    "slug": "alcohol-and-rem-sleep-how-long-to-recover",
+    "target_keyword": "how long after quitting alcohol does sleep improve",
+    "secondary_keywords": ["alcohol rem sleep architecture", "why do i wake up at 3am after drinking", "resting heart rate after quitting alcohol"],
+    "category": "Sleep & HRV Recovery",
+    "campaign_prefix": "seo_rem_sleep_recovery",
+    "pitch_screen": "02-body-recovery.webp",
+    "pitch_headline": "See when your Deep REM Sleep Architecture unlocks",
+    "pitch_body": "Track the exact day your night-time cortisol spikes fade and deep restorative REM cycles return.",
+    "status": "pending"
+  },
+  {
+    "slug": "30-day-dry-challenge-survival-blueprint",
+    "target_keyword": "30 day no alcohol challenge tips and benefits",
+    "secondary_keywords": ["dry month tracker", "sober october dry january preparation", "what to expect 30 days no alcohol"],
+    "category": "Dry Challenge · Blueprint",
+    "campaign_prefix": "seo_30day_dry_challenge",
+    "pitch_screen": "05-calendar.webp",
+    "pitch_headline": "Complete your 30-day dry challenge with visual momentum",
+    "pitch_body": "Fill your monthly calendar with calm green check-ins and unlock milestones at Day 3, Day 7, Day 14, and Day 30.",
+    "status": "pending"
+  },
+  {
+    "slug": "private-sobriety-tracker-no-account-offline",
+    "target_keyword": "private sobriety tracker app without account or community",
+    "secondary_keywords": ["offline alcohol tracker ios", "sober counter no subscription", "track drinking privately on iphone"],
+    "category": "Privacy & Local-First",
+    "campaign_prefix": "seo_private_tracker",
+    "pitch_screen": "08-private.webp",
+    "pitch_headline": "100% Local-First: Zero accounts, zero cloud uploads",
+    "pitch_body": "Your drinking logs belong on your iPhone—not on a corporate server or public social feed.",
+    "status": "pending"
+  }
+]
