@@ -167,7 +167,7 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="origin-when-cross-origin">
-    <meta name="apple-itunes-app" content="app-id={app_id}, app-argument={canonical_url}">
+    <meta name="apple-itunes-app" content="app-id={app_id}, affiliate-data=pt={pt}&ct=web_smart_banner, app-argument={canonical_url}">
     <meta name="description" content="{html.escape(post['meta_description'])}">
     <meta name="theme-color" content="#F7F4EE">
     <link rel="canonical" href="{canonical_url}">
@@ -298,7 +298,7 @@ def render_guides_index_html(posts: list, cfg: dict) -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="origin-when-cross-origin">
-    <meta name="apple-itunes-app" content="app-id={app_id}, app-argument={canonical_url}">
+    <meta name="apple-itunes-app" content="app-id={app_id}, affiliate-data=pt={pt}&ct=web_smart_banner, app-argument={canonical_url}">
     <meta name="description" content="Evidence-based guides on alcohol body recovery timelines, 3-minute urge surfing for evening cravings, hangover anxiety relief, and mindful drinking.">
     <meta name="theme-color" content="#F7F4EE">
     <link rel="canonical" href="{canonical_url}">
