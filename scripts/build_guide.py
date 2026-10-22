@@ -418,7 +418,7 @@ def update_homepage_guides_preview(posts: list):
     cards = [render_guide_card(p, "guides/") for p in posts[:3]]
 
     replacement = '<div class="guides-preview-grid" id="home-guides-list">\n' + "\n".join(cards) + "\n          </div>"
-    pattern = r'<div class="guides-preview-grid" id="home-guides-list">.*?</div>'
+    pattern = r'<div class="guides-preview-grid" id="home-guides-list">.*?(?=\s*<div style="margin-top: 28px;">)'
     new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
     with open(index_path, "w", encoding="utf-8") as f:
         f.write(new_content)
