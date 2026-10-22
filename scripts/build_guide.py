@@ -31,6 +31,53 @@ def make_asc_url(app_id: str, pt: str, ct: str) -> str:
     return f"https://apps.apple.com/app/apple-store/id{app_id}?pt={pt}&ct={clean_ct}&mt=8"
 
 
+def get_full_title(post: dict) -> str:
+    sub = post.get("subtitle", "").strip()
+    if sub:
+        if post["title"].endswith("?") or post["title"].endswith("!"):
+            return f"{post['title']} {sub}"
+        return f"{post['title']}: {sub}"
+    return post["title"]
+
+
+def get_category_icon(category: str) -> str:
+    c = category.lower()
+    if any(k in c for k in ["craving", "urge"]):
+        return "🌊"
+    if any(k in c for k in ["financ", "saving", "money"]):
+        return "💰"
+    if any(k in c for k in ["mental", "anxiety", "neuro", "hangover"]):
+        return "🧠"
+    if any(k in c for k in ["recovery", "timeline", "body"]):
+        return "⏳"
+    return "✦"
+
+
+def render_guide_card(p: dict, link_prefix: str = "") -> str:
+    slug = p["slug"]
+    cat = p.get("category", "Guide")
+    cat_icon = get_category_icon(cat)
+    title = html.escape(p["title"])
+    subtitle = html.escape(p.get("subtitle", ""))
+    excerpt = html.escape(p.get("summary_excerpt", p.get("meta_description", "")))
+    reading_time = html.escape(p.get("reading_time", "5 min read"))
+    link = f"{link_prefix}{slug}.html"
+
+    subtitle_html = f'\n              <p class="guide-card-subtitle">{subtitle}</p>' if subtitle else ""
+
+    return f"""            <article class="guide-card">
+              <div class="guide-card-meta">
+                <span class="guide-tag">{cat_icon} {html.escape(cat)}</span>
+                <span class="guide-reading-time">{reading_time}</span>
+              </div>
+              <h3 class="guide-card-title"><a href="{link}">{title}</a></h3>{subtitle_html}
+              <p class="guide-card-excerpt">{excerpt}</p>
+              <div class="guide-card-footer">
+                <a class="guide-read-link" href="{link}">Read guide &rarr;</a>
+              </div>
+            </article>"""
+
+
 def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
     site_url = cfg["site_url"].rstrip("/")
     app_id = cfg["app_id"]
@@ -38,6 +85,8 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
     slug = post["slug"]
     canonical_url = f"{site_url}/guides/{slug}.html"
     prefix = post.get("campaign_prefix", f"seo_{slug[:24]}")
+    full_title = get_full_title(post)
+    cat_icon = get_category_icon(post.get("category", "Guide"))
 
     url_nav = make_asc_url(app_id, pt, f"{prefix}_nav")
     url_sidebar = make_asc_url(app_id, pt, f"{prefix}_side")
@@ -62,7 +111,7 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
         "@graph": [
             {
                 "@type": "Article",
-                "headline": post["title"],
+                "headline": full_title,
                 "description": post["meta_description"],
                 "datePublished": post["published_date"],
                 "dateModified": post["published_date"],
@@ -173,10 +222,10 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
     <link rel="canonical" href="{canonical_url}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{canonical_url}">
-    <meta property="og:title" content="{html.escape(post['title'])} — Alcohol Free Tracker">
+    <meta property="og:title" content="{html.escape(full_title)} — Alcohol Free Tracker">
     <meta property="og:description" content="{html.escape(post['meta_description'])}">
     <meta property="og:image" content="{site_url}/assets/appstore/{pitch_screen}">
-    <title>{html.escape(post['title'])} | Alcohol Free Tracker Guides</title>
+    <title>{html.escape(full_title)} | Alcohol Free Tracker Guides</title>
     <link rel="icon" href="../assets/app-icon.png">
     <link rel="apple-touch-icon" href="../assets/app-icon.png">
     <link rel="stylesheet" href="../styles.css">
@@ -207,8 +256,9 @@ def render_guide_html(post: dict, cfg: dict, all_posts: list) -> str:
           <div class="guide-breadcrumb">
             <a href="../index.html">Home</a> &rsaquo; <a href="index.html">Guides</a> &rsaquo; <span>{html.escape(post.get('category', 'Guide'))}</span>
           </div>
-          <span class="guide-tag">{html.escape(post.get('category', 'Evidence-Based Guide'))}</span>
-          <h1>{html.escape(post['title'])}</h1>
+          <span class="guide-tag">{cat_icon} {html.escape(post.get('category', 'Evidence-Based Guide'))}</span>
+          <h1 class="guide-hero-title">{html.escape(post['title'])}</h1>
+          {f'<p class="guide-hero-subtitle">{html.escape(post["subtitle"])}</p>' if post.get('subtitle') else ''}
           <div class="guide-meta">
             <span>Published {html.escape(post['published_date'])}</span>
             <span>&middot;</span>
@@ -282,15 +332,7 @@ def render_guides_index_html(posts: list, cfg: dict) -> str:
     url_nav = make_asc_url(app_id, pt, "web_guides_nav")
     url_sticky = make_asc_url(app_id, pt, "web_guides_sticky")
 
-    cards_html = []
-    for p in posts:
-        cards_html.append(f"""
-            <article class="guide-card">
-              <span class="guide-tag">{html.escape(p.get('category', 'Guide'))}</span>
-              <h3><a href="{p['slug']}.html">{html.escape(p['title'])}</a></h3>
-              <p>{html.escape(p.get('summary_excerpt', p['meta_description']))}</p>
-              <a class="guide-read-link" href="{p['slug']}.html">Read full guide ({html.escape(p.get('reading_time', '5 min'))}) &rarr;</a>
-            </article>""")
+    cards_html = [render_guide_card(p, "") for p in posts]
 
     return f"""<!doctype html>
 <html lang="en">
@@ -373,14 +415,7 @@ def update_homepage_guides_preview(posts: list):
     with open(index_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    cards = []
-    for p in posts[:3]:
-        cards.append(f"""            <article class="guide-card">
-              <span class="guide-tag">{html.escape(p.get('category', 'Guide'))}</span>
-              <h3><a href="guides/{p['slug']}.html">{html.escape(p['title'])}</a></h3>
-              <p>{html.escape(p.get('summary_excerpt', p['meta_description']))}</p>
-              <a class="guide-read-link" href="guides/{p['slug']}.html">Read full guide &rarr;</a>
-            </article>""")
+    cards = [render_guide_card(p, "guides/") for p in posts[:3]]
 
     replacement = '<div class="guides-preview-grid" id="home-guides-list">\n' + "\n".join(cards) + "\n          </div>"
     pattern = r'<div class="guides-preview-grid" id="home-guides-list">.*?</div>'
@@ -447,6 +482,7 @@ def main():
         {
             "slug": p["slug"],
             "title": p["title"],
+            "subtitle": p.get("subtitle", ""),
             "target_keyword": p.get("target_keyword", ""),
             "published_date": p.get("published_date", ""),
             "campaign_prefix": p.get("campaign_prefix", "")
